@@ -3,9 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Sidebar from "@/components/layout/sidebar";
 import Header from "@/components/layout/header";
-import { createContext } from "react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 

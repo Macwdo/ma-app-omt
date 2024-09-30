@@ -40,7 +40,13 @@ export async function Dashboard() {
 
   return (
     <div>
-      <div className="mb-2">
+      <div className="mb-2 md:grow-0 sm:flex-1">
+        <div className="mb-2">
+          <h1 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+            Home page
+          </h1>
+        </div>
+
         <div className="relative ml-auto flex-1 md:grow-0">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -51,7 +57,7 @@ export async function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid gap-3 md:grid-cols-3 sm:grid-cols-1">
         {data.map((item, i) => (
           <div key={i} className="">
             <Card>
