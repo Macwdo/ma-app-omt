@@ -31,6 +31,9 @@ import {
 } from "@/components/ui/select";
 import { Dispatch, SetStateAction } from "react";
 import { Payment } from "./columns";
+import { Input } from "@/components/ui/input";
+import { DataTableFacetedFilter } from "./data-table-facated-filter";
+import { ArrowUpDown } from "lucide-react";
 
 type PaginationStateProps = {
   pagination: PaginationState;
@@ -106,16 +109,18 @@ export function DataTable({
 
   return (
     <div className="w-full">
-      {/* <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm mr-2"
-        />
-      </div> */}
+      <DataTableFacetedFilter
+        options={[
+          {
+            label: "Status",
+            value: "status",
+            icon: ArrowUpDown,
+          },
+        ]}
+        title="Title 1"
+        column={table.getColumn("status")}
+      />
+
       <div className="rounded-md border bg-white z-0">
         <Table>
           <TableHeader>

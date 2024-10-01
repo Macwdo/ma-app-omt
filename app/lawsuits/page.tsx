@@ -53,6 +53,7 @@ import {
   useContext,
 } from "react";
 import { columns, Payment } from "./components/data-table/columns";
+import { DataTableFacetedFilter } from "./components/data-table/data-table-facated-filter";
 
 const data: Payment[] = [
   {
@@ -166,7 +167,13 @@ export function Dashboard() {
   return (
     <div>
       <div className="mb-2">
-        <div>
+        <div className="relative ml-auto flex-1 md:grow-0 mb-3">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search..."
+            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+          />
           <DataTable data={data} columns={columns} states={states} />
         </div>
       </div>
