@@ -5,6 +5,13 @@ import MaintenanceError from './pages/errors/maintenance-error'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 
 const router = createBrowserRouter([
+  // Auth routes
+  {
+    path: 'auth/login',
+    lazy: async () => ({
+      Component: (await import('@/pages/auth/login')).default,
+    }),
+  },
   // Main routes
   {
     path: '/',

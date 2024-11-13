@@ -1,9 +1,68 @@
+import { Button } from '@/components/custom/button'
 import { Layout } from '@/components/custom/layout'
 import { Search } from '@/components/search'
 import ThemeSwitch from '@/components/theme-switch'
+import { Input } from '@/components/ui/input'
 import { UserNav } from '@/components/user-nav'
+import { useApiService } from '@/hooks/use-api-service'
+import useMeUser from '@/hooks/use-me-user'
+import api from '@/services/api-service'
+import { getMeUser, MeUser } from '@/services/user-service'
+import { createContext, useContext, useEffect, useState } from 'react'
+
+type HomeContextType = {
+  search: string
+  setSearch: (search: string) => void
+}
+
+const HomeContext = createContext<HomeContextType>({
+  search: '',
+  setSearch: () => {},
+})
 
 export default function Home() {
+  const [search, setSearch] = useState('')
+  const [data, setData] = useState([])
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
+  const [user, setUser] = useState<MeUser | null>(null)
+  const apiService = useApiService()
+
+  const fetchUser = async () => {
+    const meUser = await apiService.get<MeUser>('/auth/me/')
+    setUser(meUser.data)
+  }
+
+  const fetchRickAndMorty = async (name: string) => {
+    const url = name
+      ? `https://rickandmortyapi.com/api/character/?name=${name}&count=2`
+      : 'https://rickandmortyapi.com/api/character'
+
+    const response = await fetch(url)
+    const result = await response.json()
+    return result.results
+  }
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 300) // Adjust delay as needed
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [search])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchRickAndMorty(debouncedSearch)
+      setData(result)
+    }
+
+    if (debouncedSearch !== '') {
+      fetchData()
+    }
+  }, [debouncedSearch])
+
   return (
     <Layout fixed>
       <Layout.Header>
@@ -16,10 +75,45 @@ export default function Home() {
         </div>
       </Layout.Header>
       <Layout.Body>
-        <div className='flex h-full items-center justify-center'>
-          <h1 className='text-4xl font-bold'>Welcome to Next.js</h1>
-        </div>
+        <HomeContext.Provider value={{ search, setSearch }}>
+          <div>
+            <Button
+              onClick={async () => {
+                await fetchUser()
+              }}
+            >
+              Search Rick {user?.firstName}
+            </Button>
+          </div>
+          <div className='flex h-full flex-col items-center justify-center'>
+            {data &&
+              data.map((item: any) => (
+                <div key={item?.id}>
+                  <p>{item?.name}</p>
+                </div>
+              ))}
+            {data.length === 0 && <p>No data found</p>}
+            <div>
+              <ChildComponent />
+            </div>
+          </div>
+        </HomeContext.Provider>
       </Layout.Body>
     </Layout>
+  )
+}
+
+const ChildComponent = () => {
+  const { setSearch } = useContext(HomeContext)
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+  }
+
+  return (
+    <div>
+      <Input onChange={handleSearch} />
+      <Button onClick={() => setSearch('')}>Clear</Button>
+    </div>
   )
 }

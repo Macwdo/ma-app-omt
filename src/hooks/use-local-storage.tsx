@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-interface LocalStorageProps<T> {
+export interface LocalStorageProps<T> {
   key: string
   defaultValue: T
 }

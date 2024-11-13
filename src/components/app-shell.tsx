@@ -1,10 +1,16 @@
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import Sidebar from './sidebar'
 import useIsCollapsed from '@/hooks/use-is-collapsed'
 import SkipToMain from './skip-to-main'
 
-export default function AppShell() {
+export default function AppShellProtectedRoute() {
+  const user = true
+  return user ? <AppShell /> : <Navigate to='/auth/login' />
+}
+
+function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
+
   return (
     <div className='relative h-full overflow-hidden bg-background'>
       <SkipToMain />
@@ -18,3 +24,4 @@ export default function AppShell() {
     </div>
   )
 }
+
