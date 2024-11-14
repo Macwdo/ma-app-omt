@@ -25,12 +25,12 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    const currentUrl = window.location.pathname
-    if (error.response?.status === 401 && currentUrl !== '/auth/login') {
-      window.location.href = '/auth/login'
-    }
-    localStorage.removeItem('user')
-    localStorage.removeItem('token')
+    // const currentUrl = window.location.pathname
+    // if (error.response?.status === 401 && currentUrl !== '/auth/login') {
+    //   window.location.href = '/auth/login'
+    // }
+    // localStorage.removeItem('user')
+    // localStorage.removeItem('token')
     return Promise.reject(error)
   }
 )

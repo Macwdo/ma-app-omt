@@ -18,7 +18,7 @@ import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 import { getMeUser, getToken, User } from '@/services/user-service'
 import useLocalStorage from '@/hooks/use-local-storage'
-// import { useToast } from '@/components/ui/use-toast'
+import { useToast } from '@/hooks/use-toast'
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -35,7 +35,7 @@ const formSchema = z.object({
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  // const { toast } = useToast()
+  const { toast } = useToast()
 
   const [, setUser] = useLocalStorage<User | null>({
     key: 'user',
@@ -50,15 +50,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log('Form Submitted with data:', data) // Debug log
     setIsLoading(true)
     try {
       const token = await getToken(data.email, data.password)
-      if (!token) {
-        console.log('ak')
-        setIsLoading(false)
-        return
-      }
       localStorage.setItem('token', JSON.stringify(token))
 
       const user = await getMeUser()
@@ -67,12 +61,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       setIsLoading(false)
       navigate('/')
     } catch (error) {
-      // toast({
-      //   title: 'Erro',
-      //   description: 'Email ou senha invalidos',
-      //   variant: 'destructive',
-      // })
-      console.log('ERroak')
+      toast({
+        title: 'Erro ao fazer login',
+        description: 'Seu email ou senha estão invalidos',
+        duration: 1000,
+      })
       setIsLoading(false)
     }
   }

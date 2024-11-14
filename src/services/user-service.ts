@@ -21,7 +21,7 @@ export const getMeUser = async () => {
 }
 
 export const getToken = async (email: string, password: string) => {
-  const response = await api.post<Token | null>('/auth/token/', {
+  const response = await api.post<Token>('/auth/token/', {
     email,
     password,
   })

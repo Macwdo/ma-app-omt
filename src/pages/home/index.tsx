@@ -77,7 +77,8 @@ export default function Home() {
           <div>
             <Button
               onClick={async () => {
-                await fetchUser()
+                const data = await fetchUser()
+                console.log(user?.email)
               }}
             >
               Search Rick {user?.firstName}
