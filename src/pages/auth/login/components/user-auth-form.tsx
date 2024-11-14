@@ -1,15 +1,9 @@
 import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  IconBrandFacebook,
-  IconBrandGithub,
-  IconNews,
-  IconQuestionMark,
-  IconRegistered,
-} from '@tabler/icons-react'
+import { IconNews, IconQuestionMark } from '@tabler/icons-react'
 import {
   Form,
   FormControl,
@@ -22,17 +16,9 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
-import { useApiService } from '@/hooks/use-api-service'
-import api from '@/services/api-service'
-import {
-  getMeUser,
-  getToken,
-  MeUser,
-  Token,
-  User,
-} from '@/services/user-service'
+import { getMeUser, getToken, User } from '@/services/user-service'
 import useLocalStorage from '@/hooks/use-local-storage'
-import { Popover } from '@/components/ui/popover'
+// import { useToast } from '@/components/ui/use-toast'
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -41,20 +27,16 @@ const formSchema = z.object({
     .string()
     .min(1, { message: 'Insira seu email' })
     .email({ message: 'Endereço de email invalido' }),
-  password: z
-    .string()
-    .min(1, {
-      message: 'Insira sua senha',
-    })
-    .min(7, {
-      message: 'A senha deve ter no mínimo 8 caracteres',
-    }),
+  password: z.string().min(1, {
+    message: 'Insira sua senha',
+  }),
 })
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
-
   const navigate = useNavigate()
+  // const { toast } = useToast()
+
   const [, setUser] = useLocalStorage<User | null>({
     key: 'user',
     defaultValue: null,
@@ -68,9 +50,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log('Form Submitted with data:', data) // Debug log
     setIsLoading(true)
     try {
       const token = await getToken(data.email, data.password)
+      if (!token) {
+        console.log('ak')
+        setIsLoading(false)
+        return
+      }
       localStorage.setItem('token', JSON.stringify(token))
 
       const user = await getMeUser()
@@ -79,7 +67,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       setIsLoading(false)
       navigate('/')
     } catch (error) {
-      console.error(error)
+      // toast({
+      //   title: 'Erro',
+      //   description: 'Email ou senha invalidos',
+      //   variant: 'destructive',
+      // })
+      console.log('ERroak')
       setIsLoading(false)
     }
   }
@@ -117,7 +110,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
-            <Button className='mt-2' loading={isLoading}>
+            <Button type='submit' className='mt-2' loading={isLoading}>
               Login
             </Button>
 

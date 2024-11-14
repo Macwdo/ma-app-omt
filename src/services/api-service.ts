@@ -13,10 +13,10 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token') ?? null
-  const accessToken = token ? (JSON.parse(token) as Token).access : null
+
+  const accessToken = token ? (JSON.parse(token) as Token) : null
   if (token) {
-    console.log('token', accessToken)
-    config.headers.Authorization = `Bearer ${accessToken}`
+    config.headers.Authorization = `Bearer ${accessToken?.access}`
   }
   return config
 })
@@ -27,12 +27,10 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     const currentUrl = window.location.pathname
     if (error.response?.status === 401 && currentUrl !== '/auth/login') {
-      localStorage.removeItem('user')
-      localStorage.removeItem('token')
-
       window.location.href = '/auth/login'
     }
-
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
     return Promise.reject(error)
   }
 )

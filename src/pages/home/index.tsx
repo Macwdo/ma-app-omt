@@ -5,9 +5,7 @@ import ThemeSwitch from '@/components/theme-switch'
 import { Input } from '@/components/ui/input'
 import { UserNav } from '@/components/user-nav'
 import { useApiService } from '@/hooks/use-api-service'
-import useMeUser from '@/hooks/use-me-user'
-import api from '@/services/api-service'
-import { getMeUser, MeUser } from '@/services/user-service'
+import { MeUser } from '@/services/user-service'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 type HomeContextType = {
