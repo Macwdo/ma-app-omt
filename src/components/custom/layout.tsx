@@ -62,7 +62,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         ref={ref}
         data-layout='header'
         className={cn(
-          `z-10 flex h-[var(--header-height)] items-center gap-4 bg-background p-4 md:px-8`,
+          `z-10 flex h-[var(--header-height)] items-center gap-4 bg-background bg-slate-50 p-4 md:px-8`,
           contextVal.offset > 10 && sticky ? 'shadow' : 'shadow-none',
           contextVal.fixed && 'flex-none',
           sticky && 'sticky top-0',
@@ -90,7 +90,7 @@ const Body = React.forwardRef<
       ref={ref}
       data-layout='body'
       className={cn(
-        'px-4 py-6 md:overflow-hidden md:px-8',
+        'bg-slate-50 px-4 py-6 md:overflow-hidden md:px-8',
         contextVal && contextVal.fixed && 'flex-1',
         className
       )}

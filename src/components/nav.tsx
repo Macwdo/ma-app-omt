@@ -106,7 +106,7 @@ function NavLink({
       <div className='mr-2'>{icon}</div>
       {title}
       {label && (
-        <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>
+        <div className='ml-2 rounded-lg bg-white px-1 text-[0.725rem] text-primary'>
           {label}
         </div>
       )}
@@ -132,7 +132,7 @@ function NavLinkDropdown({ title, icon, label, sub, closeNav }: NavLinkProps) {
         <div className='mr-2'>{icon}</div>
         {title}
         {label && (
-          <div className='ml-2 rounded-lg bg-primary px-1 text-[0.625rem] text-primary-foreground'>
+          <div className='ml-2 rounded-lg bg-white px-2 text-[0.725rem] text-primary'>
             {label}
           </div>
         )}

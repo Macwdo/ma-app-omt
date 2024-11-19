@@ -5,6 +5,7 @@ import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { sidelinks } from '@/data/sidelinks'
+import { UserNav } from './user-nav'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -44,7 +45,7 @@ export default function Sidebar({
         {/* Header */}
         <Layout.Header
           sticky
-          className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'
+          className='z-50 flex justify-between bg-white px-4 py-3 shadow-sm md:px-4'
         >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
             <svg
@@ -91,6 +92,8 @@ export default function Sidebar({
           >
             {navOpened ? <IconX /> : <IconMenu2 />}
           </Button>
+
+          <UserNav />
         </Layout.Header>
 
         {/* Navigation links */}
