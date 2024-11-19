@@ -73,30 +73,9 @@ export default function Home() {
         </div>
       </Layout.Header>
       <Layout.Body>
-        <HomeContext.Provider value={{ search, setSearch }}>
-          <div>
-            <Button
-              onClick={async () => {
-                const data = await fetchUser()
-                console.log(user?.email)
-              }}
-            >
-              Search Rick {user?.firstName}
-            </Button>
-          </div>
-          <div className='flex h-full flex-col items-center justify-center'>
-            {data &&
-              data.map((item: any) => (
-                <div key={item?.id}>
-                  <p>{item?.name}</p>
-                </div>
-              ))}
-            {data.length === 0 && <p>No data found</p>}
-            <div>
-              <ChildComponent />
-            </div>
-          </div>
-        </HomeContext.Provider>
+        <HomeContext.Provider
+          value={{ search, setSearch }}
+        ></HomeContext.Provider>
       </Layout.Body>
     </Layout>
   )

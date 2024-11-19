@@ -37,10 +37,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const navigate = useNavigate()
   const { toast } = useToast()
 
-  const [, setUser] = useLocalStorage<User | null>({
-    key: 'user',
-    defaultValue: null,
-  })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,7 +52,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       localStorage.setItem('token', JSON.stringify(token))
 
       const user = await getMeUser()
-      setUser({ ...user, ...token })
+      localStorage.setItem('user', JSON.stringify({ ...user, ...token }))
 
       setIsLoading(false)
       navigate('/')
